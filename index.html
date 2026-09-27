@@ -143,7 +143,7 @@ tr.off td{opacity:.45}
 <div class="wrap">
 
   <header>
-    <div class="hd__eye">Xanat · TikTok Shop México · v2</div>
+    <div class="hd__eye">Actualizada al 27 de septiembre de 2026</div>
     <h1 class="hd__t">Calculadora de ingreso neto</h1>
     <p class="hd__s">Metes el precio y las piezas del pedido y ves, paso a paso, el costo real de vender en TikTok Shop y lo que llega a tu cuenta.</p>
   </header>
@@ -226,7 +226,7 @@ function r2(n){ return Math.round((n + Number.EPSILON) * 100) / 100; }
    cuadran al centavo con las liquidaciones reales de TikTok. */
 function compute(i, rates){
   var R = rates || DEFAULT_RATES;
-  var piezas   = Math.max(1, Math.floor(i.piezas || 1));
+  var piezas   = Math.max(1, Math.floor(i.piezas) || 1);
   var precio   = Math.max(0, i.precio || 0);
   var envio    = Math.max(0, i.envio || 0);
   var desc     = Math.max(0, i.descuento || 0);
@@ -239,7 +239,7 @@ function compute(i, rates){
 
   var comisionFull = r2((R.comision/100) * (subtotal + envio));
   var comision = i.incentivo ? 0 : comisionFull;
-  var articulo = r2(R.articulo * piezas);
+  var articulo = subtotal > 0 ? r2(R.articulo * piezas) : 0;
   var sfpRawUnit = (R.sfp/100) * unit;
   var sfpCapped  = sfpRawUnit > R.tope;
   var sfp = r2(r2(Math.min(sfpRawUnit, R.tope)) * piezas);
@@ -270,7 +270,7 @@ function compute(i, rates){
              iva:num('rIva'), retIsr:num('rRetIsr'), retIva:num('rRetIva') };
   }
   function readInputs(){
-    return { precio:num('precio'), piezas:num('piezas') || 1, envio:num('envio'), descuento:num('descv'),
+    return { precio:num('precio'), piezas:Math.max(1, Math.floor(num('piezas')) || 1), envio:num('envio'), descuento:num('descv'),
              afiliado:$('aff').checked, tasaAfiliado:num('affRate'), incentivo:$('inc').checked };
   }
 
